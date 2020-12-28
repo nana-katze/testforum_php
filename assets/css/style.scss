@@ -1,11 +1,22 @@
 @charset "UTF-8";
 
+$bgcolor: #f7f7f7;
+$bgcolor-info: #fff;
+$fontcolor-main: #333;
+$fontcolor-time: #999;
+$fontcolor-btn: #fff;
+$bordercolor: #999;
+$btncolor: #37a1e5;
+
 html{
 	font-size: 62.5%;
 }
 
 body{
-	font-size: 1.6em;
+	font-size: 1.4em;
+	background-color: $bgcolor;
+	color: $fontcolor-main;
+	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, "ＭＳ Ｐゴシック", sans-serif;
 }
 
 .wrapper{
@@ -28,18 +39,44 @@ form{
 			&[type=text]{
 				&[name=name]{
 					width: 300px;
+					border: 1px solid $bordercolor;
 				}
 			}
 		}
 		textarea{
 			resize: none;
+			border: 1px solid $bordercolor;
 		}
 	}
 	input[type=submit]{
 		width: 150px;
-		padding: 5px;
+		padding: 10px;
+		border-radius: 5px;
+		border: transparent;
+		background-color: $btncolor;
+		color: $fontcolor-btn;
 	}
 }
 
+article{
+	background-color: $bgcolor-info;
+	margin: 15px auto;
+	padding: 20px;
+	text-align: left;
+	width: 500px;
+	border-radius: 10px;
+	.info{
+		margin-bottom: 10px;
+		h2{
+			display: inline;
+			margin-right: 15px;
+			font-size: 1.4rem;
+		}
+		time{
+			color: $fontcolor-time;
+			font-size: 1.2rem;
+		}
+	}
+}
 
 
