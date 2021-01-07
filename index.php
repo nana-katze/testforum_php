@@ -1,6 +1,5 @@
 <?php
-	// メッセージ保存ファイルパスの指定
-	define('FILENAME', './message.txt');
+	require_once('config.php');
 	
 	// タイムゾーン設定
 	date_default_timezone_set('Asia/Tokyo');
@@ -8,42 +7,83 @@
 	// 変数の初期化
 	$now_date = null;
 	$data = null;
-	$file_handle = null;
 	$split_data = null;
 	$message = array();
-	$message_array = array();
+	$result = array();
 	$success_message = null;
+	$error_message = array();
+	$clean = array();
+
+	session_start();
 
 	if(!empty($_POST['btn_submit'])){
-		if($file_handle = fopen(FILENAME, "a")){
+		// 入力チェック
+		if(empty($_POST['name'])){
+			$error_message[] = '名前を入力してください。';
+		} else{
+			$clean['name'] = htmlspecialchars($_POST['name'], ENT_QUOTES);
+			$clean['name'] = preg_replace( '/\\r\\n|\\n|\\r/', '', $clean['name']);
+		}
+		if(empty($_POST['message'])){
+			$error_message[] = 'メッセージを入力してください。';
+		} else{
+			$clean['message'] = htmlspecialchars($_POST['message'], ENT_QUOTES);
+			$clean['message'] = preg_replace( '/\\r\\n|\\n|\\r/', '<br>', $clean['message']);
+		}
+
+		if(empty($error_message)){
 			// 投稿日時を取得
 			$now_date = date("Y-m-d H:i:s");
-			// 投稿内容を取得
-			$data = "'".$_POST['name']."','".$_POST['message']."','".$now_date."'\n";
-			// 投稿内容を保存
-			fwrite($file_handle, $data);
-			// ファイルを閉じる
-			fclose($file_handle);
 
-			$success_message = 'メッセージを投稿しました。';
+			try {
+				// データベースに接続
+				$pdo = new PDO(DSN, DB_USER, DB_PASS);
+				$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+				// SQL生成
+				$stmt = $pdo->prepare('INSERT INTO board( name, message, post_date ) VALUES( :name, :message, :post_date )');
+				// 値を挿入
+				$stmt->bindValue(':name', $clean['name'], PDO::PARAM_STR);
+				$stmt->bindValue(':message', $clean['message'], PDO::PARAM_STR);
+				$stmt->bindValue(':post_date', date("Y-m-d H:i:s", strtotime($now_date)), PDO::PARAM_STR);
+				// 実行
+				$stmt->execute();
+
+				// DB切断
+				$stmt = null;
+				$pdo = null;
+
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+				exit;
+			}
+
+			$_SESSION['success_message'] = 'メッセージを投稿しました。';
+			header('Location: ./');
 		}
 	}
 
-	if($file_handle = fopen(FILENAME, 'r')){
-		while($data = fgets($file_handle)){
-			$split_data = preg_split('/\'/', $data);
+	try {
+			// データベースに接続
+			$pdo = new PDO(DSN, DB_USER, DB_PASS);
+			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-			$message = array(
-				'name' => $split_data[1],
-				'message' => $split_data[3],
-				'post_date' => $split_data[5]
-			);
-			array_unshift($message_array, $message);
-		}
+			// SQL生成
+			$stmt = $pdo->prepare('SELECT name, message, post_date FROM board ORDER BY post_date DESC');
+			// 実行
+			$stmt->execute();
+			// 結果を取得
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		// ファイルを閉じる
-		fclose($file_handle);
-	}
+			// DB切断
+			$stmt = null;
+			$pdo = null;
+
+	} catch (PDOException $e) {
+		echo $e->getMessage();
+		exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -57,8 +97,16 @@
 </head>
 <body>
 	<div class="wrapper">
-		<?php if(!empty($success_message)): ?>
-			<p class="success_message"><?php echo $success_message; ?></p>
+		<?php if(empty($_POST['btn_submit']) && !empty($_SESSION['success_message'])): ?>
+			<p class="success_message"><?php echo $_SESSION['success_message']; ?></p>
+			<?php unset($_SESSION['success_message']); ?>
+		<?php endif; ?>
+		<?php if(!empty($error_message)): ?>
+			<ul class="error_message">
+				<?php foreach($error_message as $value): ?>
+					<li>・<?php echo $value; ?></li>
+				<?php endforeach ?>
+			</ul>
 		<?php endif; ?>
 		<h1 class="title">なんでも掲示板</h1>
 		<p>なんでも書き込んでください</p>
@@ -74,8 +122,8 @@
 		<input type="submit" name="btn_submit" value="投稿">
 		</form>
 		<section>
-			<?php if(!empty($message_array)): ?>
-				<?php foreach($message_array as $value): ?>
+			<?php if(!empty($result)): ?>
+				<?php foreach($result as $value): ?>
 					<article>
 						<div class="info">
 							<h2><?php echo $value['name']; ?></h2>

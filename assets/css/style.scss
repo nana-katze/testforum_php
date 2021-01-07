@@ -42,6 +42,9 @@ form{
 					border: 1px solid $bordercolor;
 				}
 			}
+			&[type=password]{
+				@extend input[type=text];
+			}
 		}
 		textarea{
 			resize: none;
