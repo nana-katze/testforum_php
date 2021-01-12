@@ -22,13 +22,11 @@
 			$error_message[] = '名前を入力してください。';
 		} else{
 			$clean['name'] = htmlspecialchars($_POST['name'], ENT_QUOTES);
-			$clean['name'] = preg_replace( '/\\r\\n|\\n|\\r/', '', $clean['name']);
 		}
 		if(empty($_POST['message'])){
 			$error_message[] = 'メッセージを入力してください。';
 		} else{
 			$clean['message'] = htmlspecialchars($_POST['message'], ENT_QUOTES);
-			$clean['message'] = preg_replace( '/\\r\\n|\\n|\\r/', '<br>', $clean['message']);
 		}
 
 		if(empty($error_message)){
@@ -129,7 +127,7 @@
 							<h2><?php echo $value['name']; ?></h2>
 							<time><?php echo date('Y年m月d日 H:i', strtotime($value['post_date'])); ?></time>
 						</div>
-						<p><?php echo $value['message']; ?></p>
+						<p><?php echo nl2br($value['message']); ?></p>
 					</article>
 				<?php endforeach; ?>
 			<?php endif; ?>
