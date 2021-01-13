@@ -5,8 +5,10 @@ $bgcolor-info: #fff;
 $fontcolor-main: #333;
 $fontcolor-time: #999;
 $fontcolor-btn: #fff;
+$fontcolor-btn-cancel: #333;
 $bordercolor: #999;
 $btncolor: #37a1e5;
+$btncolor-cancel: #999;
 
 html{
 	font-size: 62.5%;
@@ -21,6 +23,8 @@ body{
 
 .wrapper{
 	text-align: center;
+	width: 40%;
+	margin: 0 auto;
 }
 
 .title{
@@ -33,17 +37,19 @@ form{
 		display: flex;
 		flex-direction: column;
 		text-align: left;
-		margin: 15px auto;
-		width: 500px;
+		margin: 20px auto;
+		label{
+			margin-bottom: 10px;
+		}
 		input{
 			&[type=text]{
 				&[name=name]{
-					width: 300px;
+					width: 50%;
 					border: 1px solid $bordercolor;
 				}
 			}
 			&[type=password]{
-				@extend input[type=text];
+				@extend input[type=text][name=name];
 			}
 		}
 		textarea{
@@ -51,13 +57,25 @@ form{
 			border: 1px solid $bordercolor;
 		}
 	}
-	input[type=submit]{
-		width: 150px;
-		padding: 10px;
-		border-radius: 5px;
-		border: transparent;
+	.inputarea-admin{
+		align-items: center;
+	}
+}
+
+.btn{
+	width: 150px;
+	padding: 10px;
+	border-radius: 5px;
+	border: transparent;
+	&:hover{
+		opacity: 0.5;
+	}
+	&.btn_submit{
 		background-color: $btncolor;
 		color: $fontcolor-btn;
+	}
+	&.btn_cancel, &.btn_logout{
+		border: 1px solid $btncolor-cancel;
 	}
 }
 
@@ -66,9 +84,12 @@ article{
 	margin: 15px auto;
 	padding: 20px;
 	text-align: left;
-	width: 500px;
 	border-radius: 10px;
 	.info{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		flex-wrap: wrap;
 		margin-bottom: 10px;
 		h2{
 			display: inline;
@@ -79,6 +100,18 @@ article{
 			color: $fontcolor-time;
 			font-size: 1.2rem;
 		}
+	}
+}
+
+@media screen and (max-width:559px){
+	.wrapper{
+		width: 90%;
+	}
+}
+
+@media screen and (min-width:560px) and (max-width:1025px){
+	.wrapper{
+		width: 60%;
 	}
 }
 

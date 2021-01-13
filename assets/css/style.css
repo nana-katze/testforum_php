@@ -12,6 +12,8 @@ body {
 
 .wrapper {
   text-align: center;
+  width: 40%;
+  margin: 0 auto;
 }
 
 .title {
@@ -31,12 +33,15 @@ form .inputarea {
       -ms-flex-direction: column;
           flex-direction: column;
   text-align: left;
-  margin: 15px auto;
-  width: 500px;
+  margin: 20px auto;
 }
 
-form .inputarea input[type=text][name=name] {
-  width: 300px;
+form .inputarea label {
+  margin-bottom: 10px;
+}
+
+form .inputarea input[type=text][name=name], form .inputarea input[type=password] {
+  width: 50%;
   border: 1px solid #999;
 }
 
@@ -45,13 +50,30 @@ form .inputarea textarea {
   border: 1px solid #999;
 }
 
-form input[type=submit] {
+form .inputarea-admin {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.btn {
   width: 150px;
   padding: 10px;
   border-radius: 5px;
   border: transparent;
+}
+
+.btn:hover {
+  opacity: 0.5;
+}
+
+.btn.btn_submit {
   background-color: #37a1e5;
   color: #fff;
+}
+
+.btn.btn_cancel, .btn.btn_logout {
+  border: 1px solid #999;
 }
 
 article {
@@ -59,11 +81,22 @@ article {
   margin: 15px auto;
   padding: 20px;
   text-align: left;
-  width: 500px;
   border-radius: 10px;
 }
 
 article .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   margin-bottom: 10px;
 }
 
@@ -76,5 +109,17 @@ article .info h2 {
 article .info time {
   color: #999;
   font-size: 1.2rem;
+}
+
+@media screen and (max-width: 559px) {
+  .wrapper {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 560px) and (max-width: 1025px) {
+  .wrapper {
+    width: 60%;
+  }
 }
 /*# sourceMappingURL=style.css.map */

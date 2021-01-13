@@ -118,8 +118,8 @@
 					<label for="message">メッセージ</label>
 					<textarea name="message" id="message" cols="20" rows="10"><?php if(!empty($value['message'])){echo $value['message'];} ?></textarea>
 				</div>
-				<a href="admin.php" class="btn_cancel">キャンセル</a>
-				<input type="submit" name="btn_submit" value="更新">
+				<a href="admin.php"><input type="button" value="キャンセル" class="btn btn_cancel"></a>
+				<input class="btn btn_submit" type="submit" name="btn_submit" value="更新">
 				<input type="hidden" name="message_id" value="<?php echo $value['id']; ?>">
 			<?php endforeach; ?>
 		</form>

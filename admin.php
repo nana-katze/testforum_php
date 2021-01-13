@@ -76,25 +76,29 @@
 					<?php foreach($result as $value): ?>
 						<article>
 							<div class="info">
-								<h2><?php echo $value['name']; ?></h2>
-								<time><?php echo date('Y年m月d日 H:i', strtotime($value['post_date'])); ?></time>
-								<p><a href="edit.php?message_id=<?php echo $value['id']; ?>">編集</a></p>
-								<p><a href="delete.php?message_id=<?php echo $value['id']; ?>">削除</a></p>
+								<div class="info-header">
+									<h2><?php echo $value['name']; ?></h2>
+									<time><?php echo date('Y年m月d日 H:i', strtotime($value['post_date'])); ?></time>
+								</div>
+								<div class="info-edit">
+									<a href="edit.php?message_id=<?php echo $value['id']; ?>">編集</a>
+									<a href="delete.php?message_id=<?php echo $value['id']; ?>">削除</a>
+								</div>
 							</div>
 							<p><?php echo nl2br($value['message']); ?></p>
 						</article>
 					<?php endforeach; ?>
 				<?php endif; ?>
 				<form action="" method="get">
-					<input type="submit" name="btn_logout" value="ログアウト">
+					<input class="btn btn_logout" type="submit" name="btn_logout" value="ログアウト">
 				</form>
 			<?php else: ?>
 				<form action="" method="post">
-					<div>
-						<label for="admin_password">ログインパスワード</label>
+					<div class="inputarea inputarea-admin">
+						<label for="admin_password">パスワードを入力してください。</label>
 						<input type="password" id="admin_password" name="admin_password" value="">
 					</div>
-						<input type="submit" name="btn_submit" value="ログイン">
+						<input class="btn btn_submit" type="submit" name="btn_submit" value="ログイン">
 				 </form>
 			<?php endif; ?>
 		</section>

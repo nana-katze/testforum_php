@@ -109,23 +109,25 @@
 		<h1 class="title">なんでも掲示板</h1>
 		<p>なんでも書き込んでください</p>
 		<form action="" method="post">
-		<div class="inputarea">
-			<label for="name">お名前</label>
-			<input type="text" name="name" id="name">
-		</div>
-		<div class="inputarea">
-			<label for="message">メッセージ</label>
-			<textarea name="message" id="message" cols="20" rows="10"></textarea>
-		</div>
-		<input type="submit" name="btn_submit" value="投稿">
+			<div class="inputarea">
+				<label for="name">お名前</label>
+				<input type="text" name="name" id="name">
+			</div>
+			<div class="inputarea">
+				<label for="message">メッセージ</label>
+				<textarea name="message" id="message" cols="20" rows="10"></textarea>
+			</div>
+			<input class="btn btn_submit" type="submit" name="btn_submit" value="投稿">
 		</form>
 		<section>
 			<?php if(!empty($result)): ?>
 				<?php foreach($result as $value): ?>
 					<article>
 						<div class="info">
-							<h2><?php echo $value['name']; ?></h2>
-							<time><?php echo date('Y年m月d日 H:i', strtotime($value['post_date'])); ?></time>
+							<div class="info-header">
+								<h2><?php echo $value['name']; ?></h2>
+								<time><?php echo date('Y年m月d日 H:i', strtotime($value['post_date'])); ?></time>
+							</div>
 						</div>
 						<p><?php echo nl2br($value['message']); ?></p>
 					</article>
